@@ -46,8 +46,7 @@ public class Population {
 
     public DNA acceptReject(float maxFitness){
         Random rand = new Random();
-        if ((int) (maxFitness) != 0) {
-
+        System.out.println("max fitness" + maxFitness);
             while (true) {
                 int index = rand.nextInt(this.Population.size());
                 System.out.println(index);
@@ -58,35 +57,33 @@ public class Population {
                 }
             }
 
-        }
-        else{
-         int index = rand.nextInt(this.Population.size());
-
-
-         return this.Population.get(index) ;
-        }
-
     }
 
     public void generate(){
-
+        this.calcFitness();
         Float [] fitnessArray = new Float[Population.size()];
         float maxFitness = 0;
         float fitness = 0;
         float sum = 0;
+
         for (int i = 0; i < Population.size(); i++) {
             fitness = Population.get(i).fitness;
             fitnessArray[i] = fitness;
+            if (fitness > maxFitness){
+                maxFitness = fitness;
+            }
             sum += fitness;
         }
+
         float arrayMax = Collections.max(Arrays.asList(fitnessArray));
         float arrayMin =  Collections.min(Arrays.asList(fitnessArray));
         float average = sum/((float)(fitnessArray.length));
+
         Random r = new Random();
-        int popsize = this.Population.size();
+        //int popsize = this.Population.size();
         this.matingPool.clear();
 
-        for (int i = 0; i < popsize; i++) {
+        for (int i = 0; i < this.Population.size(); i++) {
 
             DNA partnerA = this.acceptReject(arrayMax);
             DNA partnerB = this.acceptReject(arrayMax);
@@ -129,11 +126,9 @@ public class Population {
                 index = i;
                 this.worldRecord = this.Population.get(i).fitness;
             }
-        }
-
-      //  this.best = this.Population[index].getPhrase();
-        if (this.worldRecord >= this.perfectScore) {
-            this.finished = true;
+            if (this.Population.get(i).perfect){
+                this.finished = true;
+            }
         }
 
     }

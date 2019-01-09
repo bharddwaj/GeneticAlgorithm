@@ -4,7 +4,7 @@ public class DNA {
     char[] genes;
     char[] alpha = {'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z',' '};
     float fitness;
-
+    boolean perfect;
     // Constructor (makes a random DNA)
     public DNA(int num) {
         Random r = new Random();
@@ -36,8 +36,13 @@ public class DNA {
                 }
             }
         d.fitness = score / target.length();
-        float fitnessValue =(float)(Math.pow((double)(2),(double)(d.fitness)));
-        return d.fitness;
+        if (d.fitness >= 1.0){
+            d.perfect = true;
+        }
+        float fitnessValue =(float)(Math.pow((double)(2),(double)(d.fitness*10)));
+        d.fitness = fitnessValue;
+       // System.out.println("fitness " + fitnessValue );
+        return fitnessValue;
     }
 
         // Crossover
@@ -67,9 +72,9 @@ public class DNA {
         // Based on a mutation probability, picks a new random character
        public boolean  mutate(float mutationRate) {
             Random r = new Random();
-            float randomFloat = r.nextFloat();
+            float randomFloat = r.nextInt(100);
             for (int i = 0; i < this.genes.length; i++) {
-                if (randomFloat < mutationRate) {
+                if (randomFloat <= mutationRate*100) {
                     this.genes[i] = alpha[r.nextInt(27)];
 
                 }
