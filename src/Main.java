@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Main {
     public static void main(String args[]) {
 
-        String target = "to be or not to be";
+        String target = "to be ";
         int popmax = 200;
     //    float mutationRate =  50 / 100; thats rlly funny
         float mutationRate = .1f;
@@ -17,13 +17,14 @@ public class Main {
         for (int j = 0; j < pop.size(); j ++) {
             System.out.println(pop.get(j));
         } */
+        population.evaluate();
 
-     while (!population.getFinished()) {
+        while (!population.getFinished()) {
 
 
-            population.evaluate();
+
             // Generate mating pool
-            population.naturalSelection();
+
             //Create next generation
             population.generate();
             // Calculate fitness
@@ -32,9 +33,13 @@ public class Main {
 
             population.evaluate();
 
-            //System.out.println(population.getGenerations());
-            System.out.println(population.getWorldRecord());
-            //System.out.println(population.getPopulationListSize());
+
+
+           // System.out.println(population.getGenerations());
+            System.out.println("World Record" + population.getWorldRecord());
+          //  System.out.println("Number of Children " + population.getChildren());
+            System.out.println("Number of Mutation Count " + population.getMutationCount());
+            //System.out.println(population.getPopulationListSize()); */
         }
 
         System.out.println("Number of Generations: " + population.getGenerations());

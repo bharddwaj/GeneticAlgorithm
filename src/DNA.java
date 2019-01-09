@@ -36,6 +36,7 @@ public class DNA {
                 }
             }
         d.fitness = score / target.length();
+        float fitnessValue =(float)(Math.pow((double)(2),(double)(d.fitness)));
         return d.fitness;
     }
 

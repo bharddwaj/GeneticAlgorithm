@@ -1,5 +1,8 @@
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Arrays;
+import java.util.Collections;
 public class Population {
     private ArrayList<DNA> Population;
     private String [] alphabet ={ "A", "B" ,"C", "D", "E", "F", "G", "H", "I","J", "K","L", "M", "N","O", "P","Q" ,"R", "S", "T", "U", "V", "W", "X", "Y", "Z", " "};
@@ -41,47 +44,56 @@ public class Population {
         }
     }
 
-    // Generate a mating pool
-    public void naturalSelection() {
-        // Clear the ArrayList
-        matingPool.clear();
+    public DNA acceptReject(float maxFitness){
+        Random rand = new Random();
+        if ((int) (maxFitness) != 0) {
 
-        float maxFitness = 0;
-        for (int i = 0; i < Population.size(); i++) {
-            if (Population.get(i).fitness > maxFitness) {
-                maxFitness = Population.get(i).fitness;
-            }
-        }
-
-        // Based on fitness, each member will get added to the mating pool a certain number of times
-        // a higher fitness = more entries to mating pool = more likely to be picked as a parent
-        // a lower fitness = fewer entries to mating pool = less likely to be picked as a parent
-        if (maxFitness != 0) {
-            for (int i = 0; i < Population.size(); i++) {
-
-                //float fitness = Population[i].fitness,0,maxFitness,0,1);
-                int n = (int) (Population.get(i).fitness * 100);  // Arbitrary multiplier, we can also use monte carlo method
-                for (int j = 0; j < n; j++) {              // and pick two random numbers
-                    matingPool.add(Population.get(i));
+            while (true) {
+                int index = rand.nextInt(this.Population.size());
+                System.out.println(index);
+                DNA partner = this.Population.get(index);
+                int r = rand.nextInt((int) (maxFitness));
+                if (r < partner.fitness) {
+                    return partner;
                 }
             }
+
         }
         else{
-            for (int i = 0; i < Population.size(); i++) {
-                matingPool.add(Population.get(i));
-            }
+         int index = rand.nextInt(this.Population.size());
+
+
+         return this.Population.get(index) ;
         }
+
     }
 
     public void generate(){
+
+        Float [] fitnessArray = new Float[Population.size()];
+        float maxFitness = 0;
+        float fitness = 0;
+        float sum = 0;
+        for (int i = 0; i < Population.size(); i++) {
+            fitness = Population.get(i).fitness;
+            fitnessArray[i] = fitness;
+            sum += fitness;
+        }
+        float arrayMax = Collections.max(Arrays.asList(fitnessArray));
+        float arrayMin =  Collections.min(Arrays.asList(fitnessArray));
+        float average = sum/((float)(fitnessArray.length));
         Random r = new Random();
         int popsize = this.Population.size();
-        this.Population.clear();
+        this.matingPool.clear();
+
         for (int i = 0; i < popsize; i++) {
-            int a = r.nextInt(this.matingPool.size());
-            int b = r.nextInt(this.matingPool.size());
-            DNA childZero = this.matingPool.get(a).crossover(this.matingPool.get(b),0);
-            this.Population.add(childZero);
+
+            DNA partnerA = this.acceptReject(arrayMax);
+            DNA partnerB = this.acceptReject(arrayMax);
+
+            DNA childZero = partnerA.crossover(partnerB,0);
+
+            this.matingPool.add(childZero);
             this.children ++;
             boolean mutationZero = childZero.mutate(this.mutationRate);
            // System.out.println(mutationZero);
@@ -95,9 +107,14 @@ public class Population {
             if (mutationOne){
                 this.mutationCount++;
             } */
-            this.Population.add(childZero);
+
 
         }
+        this.Population.clear();
+        for(int i = 0; i < this.matingPool.size(); i ++){
+            this.Population.add(this.matingPool.get(i));
+        }
+        System.out.println("population size " + this.Population.size() );
         this.generations++;
 
     }
@@ -106,6 +123,7 @@ public class Population {
        // double worldrecord = 0.0;
         this.worldRecord = 0;
         int index = 0;
+
         for (int i = 0; i < this.Population.size(); i++) {
             if (this.Population.get(i).fitness > this.worldRecord) {
                 index = i;
@@ -114,7 +132,7 @@ public class Population {
         }
 
       //  this.best = this.Population[index].getPhrase();
-        if (this.worldRecord == this.perfectScore) {
+        if (this.worldRecord >= this.perfectScore) {
             this.finished = true;
         }
 
