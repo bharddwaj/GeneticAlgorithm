@@ -8,7 +8,7 @@ public class Main {
         String target = "hello";
         int popmax = 200;
     //    float mutationRate =  50 / 100; thats rlly funny
-        float mutationRate = .01f;
+        float mutationRate = .02f;
         Population population = new Population(target, popmax, mutationRate);
 
 
@@ -32,6 +32,7 @@ public class Main {
             population.calcFitness();
 
             population.evaluate();
+            System.out.println("Number of Generations: " + population.getGenerations());
 
         }
 

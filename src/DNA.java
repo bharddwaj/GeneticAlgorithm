@@ -73,14 +73,16 @@ public class DNA {
         // Based on a mutation probability, picks a new random character
        public boolean  mutate(float mutationRate) {
             Random r = new Random();
-            float randomFloat = r.nextInt(100);
+            boolean mutationHappened = false;
             for (int i = 0; i < this.genes.length; i++) {
+                float randomFloat = r.nextInt(100);
                 if (randomFloat <= mutationRate*100) {
                     this.genes[i] = alpha[r.nextInt(27)];
+                    mutationHappened = true;
 
                 }
             }
-            return randomFloat < mutationRate;
+            return mutationHappened;
         }
 
         public String toString(){
