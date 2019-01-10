@@ -46,10 +46,9 @@ public class Population {
 
     public DNA acceptReject(float maxFitness){
         Random rand = new Random();
-        System.out.println("max fitness" + maxFitness);
             while (true) {
                 int index = rand.nextInt(this.Population.size());
-                System.out.println(index);
+              //  System.out.println(index);
                 DNA partner = this.Population.get(index);
                 int r = rand.nextInt((int) (maxFitness));
                 if (r < partner.fitness) {
@@ -57,6 +56,18 @@ public class Population {
                 }
             }
 
+    }
+
+    public DNA alternativeSelection(){
+        Random rand = new Random();
+        int index = 0;
+        float r = rand.nextFloat();
+        while (r >= 0){
+            r-=this.Population.get(index).fitness;
+            index ++;
+        }
+        index --;
+        return this.Population.get(index);
     }
 
     public void generate(){
@@ -85,9 +96,10 @@ public class Population {
 
         for (int i = 0; i < this.Population.size(); i++) {
 
-            DNA partnerA = this.acceptReject(arrayMax);
-            DNA partnerB = this.acceptReject(arrayMax);
-
+            //DNA partnerA = this.acceptReject(arrayMax);
+            //DNA partnerB = this.acceptReject(arrayMax);
+            DNA partnerA = this.alternativeSelection();
+            DNA partnerB = this.alternativeSelection();
             DNA childZero = partnerA.crossover(partnerB,0);
 
             this.matingPool.add(childZero);
@@ -97,8 +109,9 @@ public class Population {
             if (mutationZero){
                 this.mutationCount++;
             }
-         /*   DNA childOne= this.matingPool.get(a).crossover(this.matingPool.get(b),1);
-            this.Population.add(childOne);
+            /*
+            DNA childOne= partnerA.crossover(partnerB,1);
+            this.matingPool.add(childOne);
             this.children ++;
             boolean mutationOne = childOne.mutate(this.mutationRate);
             if (mutationOne){
@@ -111,7 +124,7 @@ public class Population {
         for(int i = 0; i < this.matingPool.size(); i ++){
             this.Population.add(this.matingPool.get(i));
         }
-        System.out.println("population size " + this.Population.size() );
+
         this.generations++;
 
     }
@@ -126,7 +139,8 @@ public class Population {
                 index = i;
                 this.worldRecord = this.Population.get(i).fitness;
             }
-            if (this.Population.get(i).perfect){
+            if (this.Population.get(i).perfect || this.Population.get(i).fitness >= 1.0){
+                //make sure to change this or statement if i change the fitness function
                 this.finished = true;
             }
         }

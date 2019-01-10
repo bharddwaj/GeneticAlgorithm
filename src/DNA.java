@@ -39,10 +39,11 @@ public class DNA {
         if (d.fitness >= 1.0){
             d.perfect = true;
         }
-        float fitnessValue =(float)(Math.pow((double)(2),(double)(d.fitness*10)));
-        d.fitness = fitnessValue;
+       // float fitnessValue =(float)(Math.pow((double)(2),(double)(d.fitness*10)));
+        //float fitnessValue =(float)(Math.pow((double)(d.fitness*10),(double)(2)));
+        //d.fitness = fitnessValue;
        // System.out.println("fitness " + fitnessValue );
-        return fitnessValue;
+        return d.fitness;
     }
 
         // Crossover

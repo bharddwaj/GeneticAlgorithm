@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Main {
     public static void main(String args[]) {
 
-        String target = "to be ";
+        String target = "hello";
         int popmax = 200;
     //    float mutationRate =  50 / 100; thats rlly funny
         float mutationRate = .01f;
@@ -33,14 +33,6 @@ public class Main {
 
             population.evaluate();
 
-
-
-           // System.out.println(population.getGenerations());
-            System.out.println("World Record" + population.getWorldRecord());
-          //  System.out.println("Number of Children " + population.getChildren());
-            System.out.println("Number of Mutation Count " + population.getMutationCount());
-            System.out.println("Number of Generations: " + population.getGenerations());
-            //System.out.println(population.getPopulationListSize()); */
         }
 
         System.out.println("Number of Generations: " + population.getGenerations());
