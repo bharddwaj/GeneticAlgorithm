@@ -5,8 +5,8 @@ import java.util.ArrayList;
 public class Main {
     public static void main(String args[]) {
 
-        String target = "hello";
-        int popmax = 200;
+        String target = "hello I don't think this is efficient";
+        int popmax = 2000;
     //    float mutationRate =  50 / 100; thats rlly funny
         float mutationRate = .02f;
         Population population = new Population(target, popmax, mutationRate);
